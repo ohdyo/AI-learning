@@ -21,6 +21,7 @@
             - StandardScaler().transform(test_input)
 
 ### 이후 아래 모델들을 이용하여 데이터를 학습시킨다.
+
 ---
 
 ## K-최근접 이웃 분류 모델
@@ -41,7 +42,52 @@
     - distances, index = kn.kneighbors([[standard_data_x, standard_data_y]]) # 5개의 distances 와 index에 대한 2차원 배열 반환
 
 #### 이웃 분류모델 예제 (iris)
-
+- sklearn모듈에 있는 dataset이다.
+- load_iris()를 임포트해서 사용한다.
+- iris_data는 딕셔너리 형식이여서 변환해줘서 사용하는게 편하다.
+- 순서
+  1. 데이터 전처리
+        - 데이터를 프레임에 담아서 사용하기 편하게 만든다.
+    ```python
+    df = pd.DataFrame(data=iris_data['data'], columns=iris_data.feature_names)
+    df['target'] = iris_data.target
+    ```
+  2. 정제된 데이터 형식인 numpy형식으로 변환한다.
+     - 인자로 사용되는 데이터 형식이 numpy이기 때문에 바꿔준다.
+  ```python
+  flower_input = df[['sepal length (cm)','sepal width (cm)','petal length (cm)','petal width (cm)']].to_numpy()
+  flower_label = df['target'].to_numpy()      
+  ```
+  3. 훈련 & 테스트 데이터 생성
+        - 훈련 및 테스트 데이터를 생성해주는 함수 ***train_test_split***을 사용해서 한번에 데이터를 생성한다.
+  ```python
+    train_input, test_input, train_label, test_label =\
+        train_test_split(flower_input, flower_label, test_size=.25, random_state=42)
+  ```
+  4. 정규화
+        - 표준 편차를 측정하고, 훈련 및 테스트의 표준 편차도 측정하여서 수치 규격을 맞춘다. 
+   ```python
+    standard_scaler = StandardScaler()
+    standard_scaler.fit(train_input)
+    train_scaled = standard_scaler.transform(train_input)
+    test_scaled = standard_scaler.transform(test_input)  
+   ```
+  5. 훈련
+        - 배울 모듈에 데이터를 학습시킨다.
+  ```python
+    kn = KNeighborsClassifier()
+    kn.fit(train_scaled, train_label)
+  ```
+  6. 평가
+     - 학습시킨 모듈을 평가한다.
+  ```python
+    kn.score(test_scaled, test_label)
+  ```
+  7. 예측
+    - 예측값을 인자로 받아서 출력해본다.
+  ```python
+    kn.predict(:5)
+  ```
 ---
 
 ## 지도 학습
