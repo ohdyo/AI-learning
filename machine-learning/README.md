@@ -32,7 +32,7 @@
         - 각각의 변수값이 결과에 영향을 미치는지
         - 학습에 어떤 변수값을 사용하는지
         - 해당 데이터에 대해 어떤 모델을 적용할건지
-### 3. 전처리
+### 3. <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/01_overview/README.md#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC">전처리</a>
 - 인코딩
     - ***레이블 인코딩***
         - 글자를 숫자로 변환
@@ -73,5 +73,41 @@
 
 ---
 
+###  학습 종류별 모델
+- **지도학습 분류 모델** (데이터를 사전에 정의된 범주로 분류하는 데 사용)
 
+| **모델 명** | **설명** |
+| --- | --- |
+| 로지스틱 회귀 (Logistic Regression)</a> | 이진 또는 다중 클래스 분류에 사용되며, 출력은 특정 클래스에 속할 확률로 나타남. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/01_overview/README.md#k-%EC%B5%9C%EA%B7%BC%EC%A0%91-%EC%9D%B4%EC%9B%83-%EB%B6%84%EB%A5%98-%EB%AA%A8%EB%8D%B8">K-최근접 이웃 (K-Nearest Neighbors, KNN)</a> | 가장 가까운 K개의 이웃을 기반으로 클래스를 예측하는 모델. 데이터의 분포에 따라 성능이 크게 달라질 수 있음. |
+| 서포트 벡터 머신 (Support Vector Machine, SVM) | 클래스 간의 최대 마진을 찾는 분류 모델로, 고차원 데이터에서도 잘 동작함. |
+| 결정 트리 (Decision Tree) | 의사결정 규칙을 시각화할 수 있는 트리 구조로 분류. 이해와 해석이 쉬우나, 과적합에 취약할 수 있음. |
+| 랜덤 포레스트 (Random Forest) | 여러 결정 트리를 결합해 예측하는 앙상블 모델로, 과적합을 방지하고 성능을 향상시킴. |
+| 나이브 베이즈 (Naive Bayes) | 조건부 확률 기반 분류 모델로, 가정이 간단하고 계산 효율이 높아 텍스트 분류 등에 자주 사용됨. |
+| 그래디언트 부스팅 머신 (Gradient Boosting Machine, GBM) | 이전 트리의 오차를 줄이는 방식으로 여러 트리를 결합해 성능을 향상시키는 모델. **XGBoost**, **LightGBM** 등이 대표적. |
 
+---
+지도학습 회귀 모델 (연속적인 값을 예측하는 데 사용)
+
+| **모델 명** | **설명** |
+| --- | --- |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/01_overview/README.md#%EC%98%88%EC%B8%A1%EC%BB%AC%EB%9F%BC%EC%9D%B4-%ED%95%98%EB%82%98%EC%9D%B8-%EA%B2%BD%EC%9A%B0">선형 회귀 (Linear Regression)</a> | 독립 변수와 종속 변수 간의 선형 관계를 가정하여 값을 예측하는 모델. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/01_overview/README.md#%EC%98%88%EC%B8%A1%EC%BB%AC%EB%9F%BC%EC%9D%B4-%EC%97%AC%EB%9F%AC%EA%B0%9C%EC%9D%B8-%EA%B2%BD%EC%9A%B0">다중 선형 회귀 (Multiple Linear Regression)</a> | 여러 독립 변수를 사용해 종속 변수의 값을 예측하는 선형 모델. |
+| 릿지 회귀 (Ridge Regression) | 과적합을 방지하기 위해 L2 정규화(term)를 추가한 선형 회귀 모델. |
+| 라쏘 회귀 (Lasso Regression) | 과적합을 방지하기 위해 L1 정규화(term)를 추가한 선형 회귀 모델. |
+| 다항 회귀 (Polynomial Regression) | 독립 변수와 종속 변수 간의 비선형 관계를 나타낼 때 사용하는 회귀 모델. |
+| 그래디언트 부스팅 회귀 (Gradient Boosting Regression) | 회귀 문제에 적합한 앙상블 학습 모델로, 여러 약한 학습기를 결합해 성능을 향상시키는 방식. **XGBoost**, **LightGBM** 등 사용. |
+
+---
+
+- 비지도학습 모델 (라벨이 없는 데이터를 기반으로 데이터의 패턴을 발견하는 데 사용)
+
+| **모델 명** | **설명** |
+| --- | --- |
+| K-평균 군집화 (K-Means Clustering) | 데이터를 K개의 군집으로 나누어 각 군집의 중심과 가까운 데이터를 그룹화하는 군집화 기법. |
+| 계층적 군집화 (Hierarchical Clustering) | 데이터 간의 거리를 측정해 계층적으로 군집을 형성하며, 트리 구조로 시각화 가능. |
+| DBSCAN (Density-Based Spatial Clustering of Applications with Noise) | 밀도 기반의 군집화 기법으로, 밀집된 군집과 잡음을 구분함. 비정형 데이터에 강한 성능을 보임. |
+| 주성분 분석 (PCA, Principal Component Analysis) | 차원을 축소해 데이터의 주요 성분을 추출하는 기법으로, 데이터 시각화나 차원 축소에 사용됨. |
+| t-SNE (t-distributed Stochastic Neighbor Embedding) | 고차원의 데이터를 2차원 또는 3차원으로 변환해 데이터의 분포를 시각화하는 비지도학습 기법. |
+| UMAP (Uniform Manifold Approximation and Projection) | 차원 축소 기법으로, t-SNE와 유사하지만 더 빠르고 정확한 성능을 제공함. |
+| GAN (Generative Adversarial Network) | 생성자와 판별자와의 경쟁 속에서 더 나은 데이터 샘플을 만들어 내는 방식. 이미지 생성, 데이터 증강에 효과적. |
