@@ -49,7 +49,7 @@ df.describe()
 df.isnull().sum()
 # 이상치 탐색
 df['Age'].plot(kind='box') #1 박스형식으로 봐서 이상치 확인 가능
-df[df['Age'] < `] # 1살 아래의 이상치 탐색
+df[df['Age'] < 1] # 1살 아래의 이상치 탐색
 ```
 
 ***4. 데이터 시각화를 통한 탐색***
@@ -76,15 +76,30 @@ sns.heatmap(corr_matrix, annot=True)
 ***5. 데이터 정제 및 처리***
 - 결측치에 대한 값을 드랍 혹은 평균값으로 대체
     - 학습에 영향을 미칠것 같으면 평균값으로 대체
-    - 영향을 주지 않을것 같으면 삭제제
+    - 영향을 주지 않을것 같으면 삭제
     - 지금은 평균값으로 대체
 ```python
-df['Age'] = df['Age'].fillna(df['Age'].mean())
+def fillna(df):
+    """
+    결측치 처리 함수
+    - Age : 평균치로 대체
+    - Cabin : 'N' 기본값으로 대체
+    - Embarked : 'N' 기본값으로 대체
+    """
+    df['Age'] = df['Age'].fillna(df['Age'].mean())
+    df['Cabin'] = df['Cabin'].fillna('N')
+    df['Embarked'] = df['Embarked'].fillna('N')
+
+    return df
 ```
 - 필요없는 행에 대한 값을 삭제한다.
-    - 'Cabin' drop
 ```python
-df = df.drop('Cabin', axis=1)
+def drop_feature(df):
+    """
+    모델 훈련과 관련 없는 속성 제거
+    - PassengerId, Name, Ticket
+    """
+    return df.drop(['PassengerId', 'Name', 'Ticket'], axis=1)
 ```
 - 중복되는 의미를 가진 컬럼에 대한 값들을 병합 후 새 행에 값을 삽입하고 기존 행을을 제거한다.
 ```python
@@ -96,21 +111,61 @@ df = df.drop(['SibSp','Parch'],axis=1)
 df['LogFare'] = df['Fare'].apply(lambda x: np.log1p(x))
 df['LogFare'].hist()
 ```
-- 데이터를 컴퓨터가 알수있게 해당 데이터를 파악하고 0과 1로 인코딩 해준다.
+- 데이터를 컴퓨터가 알수있게 **범주형 데이터** 파악하고 0과 1로 인코딩 해준다.
 ```python
 from sklearn.preprocessing import LabelEncoder
-encoder = LabelEncoder()
-df['Sex'] = encoder.fit_transform(df['Sex'])
+def encode_feature(df):
+    """
+    범주형 데이터를 숫자로 인코딩
+    - Sex, Cabin, Embarked
+    """
+    df['Cabin'] = df['Cabin'].str[:1]    # Cabin 데이터의 앞 글자만 가져옴
+
+    categories = ['Sex', 'Cabin', 'Embarked']
+    for cate_item in categories:
+        label_encoder = LabelEncoder()
+        df[cate_item] = label_encoder.fit_transform(df[cate_item])
+```
+- 해당 전처리함수들을 모두 불러오는 함수 호출
+```python
+from sklearn.preprocessing import StandardScaler
+def preprocess_data(df):
+    df = drop_feature(df)
+    df = fillna(df)
+    df = encode_feature(df)
+
+    return df
+df = preprocess_data(df)
 ```
 
-***7. 데이터 분할***
+***7. 훈련-테스트 데이터 분리***
 - 학습을 위해 원하는 데이터를 가지고 분할한다.
 ```python
 from sklearn.model_selection import train_test_split
-X_data = df.drop('Survived', axis=1)
-y_data = df['Survived']
 
-X_train, X_test, y_train, y_test = train_test_split(X_data,y_data)
+# 입력-라벨 데이터 분리
+titanic_input = df.drop(['Survived'], axis=1)
+titanic_label = df['Survived']
+
+X_train, X_test, y_train, y_test = \
+    train_test_split(titanic_input, titanic_label, test_size=.2, random_state=0)
+```
+***8. 특성 스케일링***
+```python
+X_scaled_train, X_scaled_test = scailing_feature(X_train, X_test)
+```
+
+***9. LogisticRegression 훈련***
+```python
+from sklearn.linear_model import LogisticRegression
+lr_classifier = LogisticRegression()
+lr_classifier.fit(X_scaled_train, y_train)
+```
+
+***10. 평가***
+```python
+lr_classifier.score(X_scaled_train, y_train), \
+    lr_classifier.score(X_scaled_test, y_test)
 ```
 ---
 
