@@ -264,6 +264,219 @@ plot_tree(
 plt.show()
 ```
     
+## DecisionTreeRegressor - 회귀
+- 각 노드에서 MSE를 최소화하는 방향으로 노드 분할
+- 최종 노드(리프노드)에서는 각 샘플들의 평균값을 계산해 예측값으로 사용
+```python
+from sklearn.datasets import fetch_california_housing
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+housing_data = fetch_california_housing()
+housing_df = pd.DataFrame(housing_data.data, columns=housing_data.feature_names)
+housing_df[housing_data.target_names[0]] = housing_data.target
+housing_df.info()
+
+#학습
+dt_reg = DecisionTreeRegressor(random_state=0)
+dt_reg.fit(X_train,y_train)
+
+# 예측
+pred_train = dt_reg.predict(X_train)
+pred_test = dt_reg.predict(X_test)
+
+# 평가
+mse_train = mean_squared_error(y_train,pred_train)
+r2_train = r2_score(y_train, pred_train)
+
+mse_test = mean_squared_error(y_test,pred_test)
+r2_test = r2_score(y_test, pred_test)
+
+print('train 데이터 평가 :', mse_train, '|', r2_train)
+print('test 데이터 평가 : ', mse_test, '|', r2_test)
+
+# 시각화
+from sklearn.tree import plot_tree
+
+plt.figure(figsize=(20, 10))
+plot_tree(
+    dt_reg,
+    filled=True,
+    feature_names=housing_data.feature_names,
+    max_depth=3
+)
+plt.show()
+```
+## SVM(Support Vector Machine)
+- 이진 분류 문제 해결 (분류 모델)
+- SVM호출한 함수의 인자에 담겨지는 하이퍼 파라미터의 요소에 따라 규제를 줘서 성능에 영향을 줄수 있다.
+    - C : 학습 데이터의 오류 허용도 결정
+        - 값의 크기에 비례하여 마진의 범위가 넓어짐
 
 
 
+## SVR(Suppoter Vector Regressor)
+- 연속적인 값 예측 (회귀 모델)
+- SVR 또한 호출한 함수의 인자에 담긴 하이퍼 파라미터의 요소에 따라 데이터 변환 형식이 다름
+    - ***kernel***
+        - linear : 선형 커널
+            - 데이터가 선형적으로 분리 가능한 경우
+        - rbf : Radial Basis Function, 가우시안 커널로 비선형 데이터 처리리
+        - poly : 다항식 커널
+            - 비선형 관계, 차수 degree로 지정
+```python
+#데이터 로드
+from sklearn.datasets import fetch_california_housing
+
+housing_data = fetch_california_housing()
+
+# 데이터 분리 및 스케일링
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+X = housing_data.data
+y = housing_data.target
+
+X_train,X_test,y_train,y_test = train_test_split(X,y,random_state=42, test_size=0.2)
+
+scaler_x = StandardScaler()
+X_train_scaled = scaler_x.fit_transform(X_train)
+X_test_scaled = scaler_x.fit_transform(X_test)
+
+scaler_y = StandardScaler()
+y_train_scaled = scaler_y.fit_transform(y_train.reshape(-1,1))
+y_test_scaled = scaler_y.fit_transform(y_test.reshape(-1,1))
+
+# SVR 모델 훈련 및 평가
+from sklearn.svm import SVR
+from sklearn.metrics import mean_squared_error
+
+svr_model = SVR(kernel='rbf', C=1.0, epsilon=0.1)
+
+# 학습
+svr_model.fit(X_train_scaled,y_train_scaled)
+
+y_pred_scaled = svr_model.predict(X_test_scaled)
+y_pred = scaler_y.inverse_transform(y_pred_scaled.reshape(-1,1))
+
+mse = mean_squared_error(y_test, y_pred)
+mse
+```
+
+| 특징                   | SVM                                    | SVR                                    |
+|----------------------|---------------------------------------|---------------------------------------|
+| **목적**              | 이진 분류 문제 해결                   | 연속적인 값 예측                      |
+| **결정 경계**         | 서포트 벡터와의 거리를 최대화하여 생성 | 데이터 포인트와의 오차를 최소화하여 생성 |
+| **마진/허용 오차**    | 마진을 최대화하여 일반화 성능 향상    | ε 매개변수로 허용 오차 범위 설정       |
+| **결과**              | 클래스 예측 (이진 분류)               | 연속적인 값 예측                      |
+
+
+---
+
+## 앙상블(ensemble)
+- 다양한 모델을 결합하여 예측 성능을 향상시키틑 방법
+- 투표(voting), 배깅(Bagging), 부스팅(Boosting), 스태킹(stacking) 네 가지로 구분
+
+### voting
+- ***hard voting*** : 여러 개의 예측지에 대해 다수결로 결정
+```python
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import VotingClassifier
+from sklearn.metrics import accuracy_score
+
+knn_clf = KNeighborsClassifier()
+lr_clf = LogisticRegression()
+dt_clf = DecisionTreeClassifier()
+
+voting_clf = VotingClassifier(
+    estimators=[
+        ('knn_clf', knn_clf),
+        ('lr_clf', lr_clf),
+        ('dt_clf', dt_clf)
+    ]
+)
+
+#앙상블 모델 학습
+voting_clf.fit(X_train,y_train)
+
+y_pred_train = voting_clf.predict(X_train)
+acc_score_train = accuracy_score(y_train, y_pred_train)
+print('학습 점수 : ', acc_score_train)
+
+y_pred_test = voting_clf.predict(X_test)
+acc_score_test = accuracy_score(y_test, y_pred_test)
+print('테스트  평가 점수 : ' , acc_score_test)
+```
+- 선언한 votingClassifier의 인자로 voting= 뒤에 쓰는 문자열에 따라 soft인지 hard인지 결정
+- 작동 원리는 다수결로 각각의 모델의 결과값 중 각 인덱스에 해당하는 값이 더 많은것을 가지고 예측한다.
+```python
+# hard votin 작동 원리 == 다수결
+start, end = 40,50
+voting_clf_pred = voting_clf.predict(X_test[start:end])
+
+
+for classfier in [knn_clf,lr_clf,dt_clf]:
+    #개별 학습 및 예측
+    classfier.fit(X_train,y_train)
+    pred = classfier.predict(X_test)
+    acc_score = accuracy_score(y_test, pred)
+    
+    class_name = classfier.__class__.__name__ # 클래스의 이름 메타데이터 가져옴옴
+    print(f'{class_name} 개별 정확도: {acc_score:.4f}')
+    print(f'{class_name} 예측값 : {pred[start:end]}')
+```
+
+
+
+- ***soft voting*** : 여러 개의 예측 확률을 평균내어 결정
+    - 여러개의 모델을 동시에 데이터를 입력하여 받은 값의 각각의 속성들의 평균을 가지고 예측하는 방법
+    - pred_proba를 통해서 값을 예측해서 가져온 평균을 가지고 soft voting의 값을 증명 가능하다.
+```python
+# hard votin 작동 원리 == 다수결
+start, end = 40,50
+voting_clf_pred_proba = voting_clf.predict_proba(X_test[start:end])
+
+averages = np.full_like(voting_clf_pred_proba, 0)
+
+
+for classfier in [knn_clf,lr_clf,dt_clf]:
+    #개별 학습 및 예측
+    classfier.fit(X_train,y_train)
+    pred = classfier.predict(X_test)
+    acc_score = accuracy_score(y_test, pred)
+    pred_proba = classfier.predict_proba(X_test[start:end])
+    
+    averages += pred_proba
+    
+    class_name = classfier.__class__.__name__ # 클래스의 이름 메타데이터 가져옴옴
+    # print(f'{class_name} 개별 정확도: {acc_score:.4f}')
+    # print(f'{class_name} 예측값 : {pred_proba}')
+    
+calc_averages = averages / 3
+print('각 모델별 예측값 평균 : \n',calc_averages)
+print(np.array_equal(voting_clf_pred_proba, calc_averages))
+```
+## Bagging
+- Bootstrap Aggregation
+- Bootstrap 방식의 샘플링 : 각 estimator 마다 훈련 데이터를 뽑을 때, 중복 값을 허용하는 방식
+- 분류 모델의 경우, 각 tree(estimator)의 예측값을 다수결(hard voting)결정
+- 회귀 모델의 경우, 각 tree(estimator)의 예측값을 평균내어 결정
+- 기본적으로 100개의 tree 사용
+- 가질수 있는 여러 하이퍼 파라미터를 통해서 규제를 적용할수 있다.
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+rt_clf = RandomForestClassifier(n_estimators=100,max_depth=5, random_state=0)
+# 학습
+rt_clf.fit(X_train,y_train)
+
+y_pred_train = rt_clf.predict(X_train)
+acc_score_train = accuracy_score(y_train, y_pred_train)
+print('학습 점수: ', acc_score_train)
+
+y_pred_test = rt_clf.predict(X_test)
+acc_score_test = accuracy_score(y_test, y_pred_test)
+print('테스트 평가 점수 : ', acc_score_test)
+```

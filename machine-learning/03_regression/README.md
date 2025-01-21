@@ -73,3 +73,18 @@ w1 = w1 - w1_diff
 
 print(f'1회 업데이트된 회귀계수 w0: {w0}, w1: {w1} ')
 ```
+
+## 선형 회귀 (Linear Regression)
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+```python
+#데이터 로드
+boston_df = pd.read_csv('./data/boston_housing_train.csv')
+
+
+```
