@@ -307,12 +307,76 @@ plot_tree(
 )
 plt.show()
 ```
+---
 ## SVM(Support Vector Machine)
 - 이진 분류 문제 해결 (분류 모델)
 - SVM호출한 함수의 인자에 담겨지는 하이퍼 파라미터의 요소에 따라 규제를 줘서 성능에 영향을 줄수 있다.
     - C : 학습 데이터의 오류 허용도 결정
         - 값의 크기에 비례하여 마진의 범위가 넓어짐
+```python
+# 데이터 준비
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
 
+iris_data = load_iris()
+X_train, X_test, y_train, y_test = \
+    train_test_split(iris_data.data, iris_data.target, test_size=0.2, random_state=42)
+
+# 모델 학습 및 평가
+from sklearn.svm import SVC
+
+model = SVC(kernel="linear")
+model.fit(X_train, y_train)
+
+model.score(X_test, y_test)
+
+# 훈련/테스트 데이터 분리
+X = iris_data.data[:, :2]
+y = iris_data.target
+
+X_train, X_test, y_train, y_test = \
+    train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 모델 학습 및 평가
+svm_clf = SVC(kernel="linear", C=1.0)
+
+svm_clf.fit(X_train, y_train)
+
+svm_clf.score(X_train, y_train), svm_clf.score(X_test, y_test)
+```
+
+**하이퍼 파라미터**
+
+<table>
+  <thead>
+    <tr>
+      <th>파라미터 명</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>C</code></td>
+      <td>
+        학습 데이터의 오류 허용도를 결정<br>
+        C 값이 크면 오류를 최소화하고, 결정 경계가 데이터에 더 민감해짐 (마진을 최대화하는 대신 오류를 허용하지 않으므로 과대적합 가능성)<br>
+        C 값이 작으면 오류를 허용하면서 일반화에 더 집중 (마진을 최대화하려고 노력하면서 오류를 어느 정도 허용하나 과소적합 가능성)
+      </td>
+    </tr>
+    <tr>
+      <td><code>kernel</code></td>
+      <td>
+        비선형 데이터의 변환을 위한 커널 함수 설정
+        <ul>
+          <li><code>linear</code>: 선형 커널 (데이터가 선형적으로 분리 가능한 경우)</li>
+          <li><code>poly</code>: 다항식 커널 (비선형 관계, 차수 degree로 지정)</li>
+          <li><code>rbf</code>: RBF(Radial Basis Function)커널, 가우시안 커널로 비선형 데이터 처리</li>
+          <li><code>sigmoid</code>: 시그모이드 커널</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 
 ## SVR(Suppoter Vector Regressor)
