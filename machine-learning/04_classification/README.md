@@ -8,11 +8,13 @@
     - 이진 분류 : 이진 분류를 위한 로지스틱 함수(시그모이드)를 통해 확률값을 계산하고 0 또는 1로 분류 
     - 다중 분류 : 다중 분류를 위한 소프트맥스 함수를 통해 각 클래스별 확률값을 계산해 다중 분류
 ### ***이진 분류를 위한 Sigmoid 함수 + Logistic Regression 이용***
-- 선형회귀식을 통해 도출한 예측값(z)을 0과 1 사이의 수로 변환해주는 활성화 함수(Activation Function)
+- **선형회귀식을 통해 도출한 예측값(z)을 0과 1 사이의 수로 변환해**주는 활성화 함수(Activation Function)
 $
     시그모이드(z) = \frac{1}{1+e^{-z}}
 $
-    - - 시그모이드의 값은 ***z값의 크기와 반비례*** 한다.
+    <code>sigmoid_value = 1 /(1 + np.exp(-z)) # np.exp(-z) = e^-z</code>
+
+    - 시그모이드의 값은 ***z값의 크기와 반비례*** 한다.
 ```python
 # z = 선형회귀 결과 모델
 # 시그모이드 시각화
@@ -28,7 +30,7 @@ plt.show()
 - ***로지스틱 분류 구현***
 
 ```python
-# 데이터 불러오기기
+# 데이터 불러오기
 fish_df = pd.read_csv('./data/fish.csv')
 is_bream_orsmelt = (fish_df['Species'] == 'Bream') | (fish_df['Species'] == 'Smelt')
 fish_df = fish_df[is_bream_orsmelt]
@@ -83,24 +85,26 @@ sigmoid_value # array([0.03879683, 0.99157409, 0.98560532])
 
 
 ### ***다중 분류를 위한 Softmax함수 + logistic Regression***
-
-    - 다중 클래스 분류를 위한 활성화 함수로 각 클래스에 대한 확률값 계산
-    - k 개의 클래스가 존재할 때 주어진 입력에 대해 다음과 같이 계산
+- 다중 클래스 분류를 위한 활성화 함수로 각 클래스에 대한 확률값 계산
+- k 개의 클래스가 존재할 때 주어진 입력에 대해 다음과 같이 계산
 
 $
     softmax(z_i) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}
 $
-
-
-        - $z_k$ : 각 클래스에 대한 점수 (입력값)
-        - $e^{z_k}$ : 해당 점수에 대한 지수 함수 적용
-        - $\sum_{j=1}^{K} e^{z_j}$ : 모든 클래스 점수에 대해 지수 함수 적용 후 총합
+- $z_k$ : 각 클래스에 대한 점수 (입력값)
+- $e^{z_k}$ : 해당 점수에 대한 지수 함수 적용
+    - $\sum_{j=1}^{K} e^{z_j}$ : 모든 클래스 점수에 대해 지수 함수 적용 후 총합
     - **다중 클래스 확률 계산 순서**
         1. 샘플에 대한 회귀 결고 z 계산
         2. 소프트 맥스 함수 적용
             - z를 e의 지수로 적용해 값을 확대(클래스별 z의 차이를 극대화)
             - ***합을 각 클래스의 값으로 나눠 비율을 계산하고 반환***
         3. 가장 높은 확률 값을 가진 클래스를 선택
+- 결정 함수 구하는 코드
+<code>Z = lr_clf.decision_function(X_test[:5]) # 선형 회귀값 계산</code>
+
+- 다중분류를 위한 소프트맥스 함수값 출력 라이브러리 **scipy**
+<code>y_pred_proba = scipy.special.softmax(Z, axis=1)</code>
 ```python
 # 데이터 셋 생성
 from sklearn.datasets import make_classification
@@ -263,9 +267,10 @@ plot_tree(
 
 plt.show()
 ```
-    
+
 ## DecisionTreeRegressor - 회귀
 - 각 노드에서 MSE를 최소화하는 방향으로 노드 분할
+    - MSE의 경우 모델의 평가를 위한 검증점수로 활용됨
 - 최종 노드(리프노드)에서는 각 샘플들의 평균값을 계산해 예측값으로 사용
 ```python
 from sklearn.datasets import fetch_california_housing
@@ -309,10 +314,18 @@ plt.show()
 ```
 ---
 ## SVM(Support Vector Machine)
-- 이진 분류 문제 해결 (분류 모델)
-- SVM호출한 함수의 인자에 담겨지는 하이퍼 파라미터의 요소에 따라 규제를 줘서 성능에 영향을 줄수 있다.
+- ***이진 분류*** 문제 해결 (분류 모델)
+- SVM호출한 함수의 인자에 담겨지는 **하이퍼 파라미터의 요소**에 따라 규제를 줘서 성능에 영향을 줄수 있다.
     - C : 학습 데이터의 오류 허용도 결정
         - 값의 크기에 비례하여 마진의 범위가 넓어짐
+            - C의 값 증가 -> 과대 적합 가능성 증가
+            - C의 값 감소 -> 과소 적합 가능성 증가
+    - ***Kernel*** : 비선형 데이터의 변환을 위한 커널 함수 설정
+        - linear : 선형 커널
+        - ploy : 다항식 커널 (비선형 관계, 차수는 degree로 설정 가능)
+        - rbf : Radial Basis Function, 가우시안 커널 비선형 데이터 처리
+        - sigmoid : 시그모이드 커널
+        
 ```python
 # 데이터 준비
 from sklearn.datasets import load_iris
@@ -343,89 +356,90 @@ svm_clf = SVC(kernel="linear", C=1.0)
 svm_clf.fit(X_train, y_train)
 
 svm_clf.score(X_train, y_train), svm_clf.score(X_test, y_test)
+
+# 시각화
+from sklearn.inspection import DecisionBoundaryDisplay
+
+# 결정 경계
+dbd = DecisionBoundaryDisplay.from_estimator(svm_clf, X_train, alpha=0.7)
+
+# 훈련데이터 산점도
+plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolor="k", label="Trainig Data")
+
+plt.xlabel('sepal length')
+plt.ylabel('sepal width')
+plt.legend()
+plt.show()
 ```
 
-**하이퍼 파라미터**
+- ***Decision BoundaryDisplay 라이브러리***
+    - 클래스별 모델을 분류시켜 그것을 시각하기 위해 값을 분류해주는 라이브러리
+    - 인자로 사용한 학습 모델과, 학습 데이터, 규제정도(alpha) 설정 가능
 
-<table>
-  <thead>
-    <tr>
-      <th>파라미터 명</th>
-      <th>설명</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>C</code></td>
-      <td>
-        학습 데이터의 오류 허용도를 결정<br>
-        C 값이 크면 오류를 최소화하고, 결정 경계가 데이터에 더 민감해짐 (마진을 최대화하는 대신 오류를 허용하지 않으므로 과대적합 가능성)<br>
-        C 값이 작으면 오류를 허용하면서 일반화에 더 집중 (마진을 최대화하려고 노력하면서 오류를 어느 정도 허용하나 과소적합 가능성)
-      </td>
-    </tr>
-    <tr>
-      <td><code>kernel</code></td>
-      <td>
-        비선형 데이터의 변환을 위한 커널 함수 설정
-        <ul>
-          <li><code>linear</code>: 선형 커널 (데이터가 선형적으로 분리 가능한 경우)</li>
-          <li><code>poly</code>: 다항식 커널 (비선형 관계, 차수 degree로 지정)</li>
-          <li><code>rbf</code>: RBF(Radial Basis Function)커널, 가우시안 커널로 비선형 데이터 처리</li>
-          <li><code>sigmoid</code>: 시그모이드 커널</li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
 
 
 ## SVR(Suppoter Vector Regressor)
 - 연속적인 값 예측 (회귀 모델)
 - SVR 또한 호출한 함수의 인자에 담긴 하이퍼 파라미터의 요소에 따라 데이터 변환 형식이 다름
-    - ***kernel***
-        - linear : 선형 커널
-            - 데이터가 선형적으로 분리 가능한 경우
-        - rbf : Radial Basis Function, 가우시안 커널로 비선형 데이터 처리리
-        - poly : 다항식 커널
-            - 비선형 관계, 차수 degree로 지정
+- **작동 원리**
+
+    - 1. **𝜖-튜브(엡실론 튜브)**
+        - 데이터 포인트와 예측 값 사이의 허용 오차 범위를 정의
+        - 𝜖(엡실론 튜브) : 값을 기준으로 오차가 범위 내에 있으면 무시, 범위를 벗어나면 벌칙(Penalty)을 부여
+
+    - 2. **최적화 목표**
+        - 𝜖-튜브 내부에 데이터를 포함하면서, 오차를 최소화하고 마진(Margin)을 최대화
+
+    - 3. **커널 트릭**
+        - 비선형 데이터를 고차원 공간으로 매핑하여 선형적으로 해결 가능
+
 ```python
-#데이터 로드
-from sklearn.datasets import fetch_california_housing
+# 데이터 준비
+np.random.seed(0)
+X = np.sort(np.random.rand(40, 1) * 5, axis=0)
+y = np.sin(X).ravel() + np.random.randn(40) * 0.1
 
-housing_data = fetch_california_housing()
+X_test = np.linspace(0, 5, 100).reshape(-1, 1)
 
-# 데이터 분리 및 스케일링
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-
-X = housing_data.data
-y = housing_data.target
-
-X_train,X_test,y_train,y_test = train_test_split(X,y,random_state=42, test_size=0.2)
-
-scaler_x = StandardScaler()
-X_train_scaled = scaler_x.fit_transform(X_train)
-X_test_scaled = scaler_x.fit_transform(X_test)
-
-scaler_y = StandardScaler()
-y_train_scaled = scaler_y.fit_transform(y_train.reshape(-1,1))
-y_test_scaled = scaler_y.fit_transform(y_test.reshape(-1,1))
-
-# SVR 모델 훈련 및 평가
+# 모델 학습 및 예측
 from sklearn.svm import SVR
-from sklearn.metrics import mean_squared_error
 
-svr_model = SVR(kernel='rbf', C=1.0, epsilon=0.1)
+svr_rbf = SVR(kernel='rbf')
+svr_lin = SVR(kernel='linear')
+svr_poly = SVR(kernel='poly')
 
 # 학습
-svr_model.fit(X_train_scaled,y_train_scaled)
+svr_rbf.fit(X, y)
+svr_lin.fit(X, y)
+svr_poly.fit(X, y)
 
-y_pred_scaled = svr_model.predict(X_test_scaled)
-y_pred = scaler_y.inverse_transform(y_pred_scaled.reshape(-1,1))
+# 예측
+rbf_pred = svr_rbf.predict(X_test)
+lin_pred = svr_lin.predict(X_test)
+poly_pred = svr_poly.predict(X_test)
 
-mse = mean_squared_error(y_test, y_pred)
-mse
+# 결과 시각화
+plt.scatter(X, y, color='darkorange', label='data')
+plt.plot(X_test, rbf_pred, color='navy', label='rbf_pred')
+plt.plot(X_test, lin_pred, color='c', label="lin_pred")
+plt.plot(X_test, poly_pred, color='cornflowerblue', label='poly_pred')
+
+# epsilon 오차 범위 시각화
+svr_rbf_epsilon = svr_rbf.epsilon
+print(svr_rbf_epsilon)
+epsilon_upper = rbf_pred + svr_rbf_epsilon
+epsilon_lower = rbf_pred - svr_rbf_epsilon
+plt.fill_between(X_test.ravel(), epsilon_lower, epsilon_upper, color="skyblue", alpha=0.3)
+
+plt.xlabel('Data')
+plt.ylabel('Target')
+plt.legend()
+plt.show()
+
 ```
+
+- Epsilon의 허용 범위를 알아내게 해주는 코드
+    - 
 
 | 특징                   | SVM                                    | SVR                                    |
 |----------------------|---------------------------------------|---------------------------------------|
