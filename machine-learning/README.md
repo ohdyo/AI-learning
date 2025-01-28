@@ -93,9 +93,9 @@
 | --- | --- |
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/01_overview/README.md#%EC%98%88%EC%B8%A1%EC%BB%AC%EB%9F%BC%EC%9D%B4-%ED%95%98%EB%82%98%EC%9D%B8-%EA%B2%BD%EC%9A%B0">선형 회귀 (Linear Regression)</a> | 독립 변수와 종속 변수 간의 선형 관계를 가정하여 값을 예측하는 모델. |
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/01_overview/README.md#%EC%98%88%EC%B8%A1%EC%BB%AC%EB%9F%BC%EC%9D%B4-%EC%97%AC%EB%9F%AC%EA%B0%9C%EC%9D%B8-%EA%B2%BD%EC%9A%B0">다중 선형 회귀 (Multiple Linear Regression)</a> | 여러 독립 변수를 사용해 종속 변수의 값을 예측하는 선형 모델. |
-| 릿지 회귀 (Ridge Regression) | 과적합을 방지하기 위해 L2 정규화(term)를 추가한 선형 회귀 모델. |
-| 라쏘 회귀 (Lasso Regression) | 과적합을 방지하기 위해 L1 정규화(term)를 추가한 선형 회귀 모델. |
-| 다항 회귀 (Polynomial Regression) | 독립 변수와 종속 변수 간의 비선형 관계를 나타낼 때 사용하는 회귀 모델. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/03_regression/README.md"> 릿지 회귀 (Ridge Regression)</a> | 과적합을 방지하기 위해 L2 정규화(term)를 추가한 선형 회귀 모델. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/03_regression/README.md">라쏘 회귀 (Lasso Regression)</a> | 과적합을 방지하기 위해 L1 정규화(term)를 추가한 선형 회귀 모델. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/03_regression/README.md">다항 회귀 (Polynomial Regression)</a> | 독립 변수와 종속 변수 간의 비선형 관계를 나타낼 때 사용하는 회귀 모델. |
 | 그래디언트 부스팅 회귀 (Gradient Boosting Regression) | 회귀 문제에 적합한 앙상블 학습 모델로, 여러 약한 학습기를 결합해 성능을 향상시키는 방식. **XGBoost**, **LightGBM** 등 사용. |
 
 ---
