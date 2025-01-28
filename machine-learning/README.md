@@ -82,9 +82,9 @@
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/01_overview/README.md#k-%EC%B5%9C%EA%B7%BC%EC%A0%91-%EC%9D%B4%EC%9B%83-%EB%B6%84%EB%A5%98-%EB%AA%A8%EB%8D%B8">K-최근접 이웃 (K-Nearest Neighbors, KNN)</a> | 가장 가까운 K개의 이웃을 기반으로 클래스를 예측하는 모델. 데이터의 분포에 따라 성능이 크게 달라질 수 있음. |
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/04_classification/README.md#svmsupport-vector-machine">서포트 벡터 머신 (Support Vector Machine, SVM)</a> | 클래스 간의 최대 마진을 찾는 분류 모델로, 고차원 데이터에서도 잘 동작함. |
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/04_classification/README.md#%EA%B2%B0%EC%A0%95-%ED%8A%B8%EB%A6%AC---%EB%B6%84%EB%A5%98">결정 트리 (Decision Tree)</a> | 의사결정 규칙을 시각화할 수 있는 트리 구조로 분류. 이해와 해석이 쉬우나, 과적합에 취약할 수 있음. |
-| 랜덤 포레스트 (Random Forest) | 여러 결정 트리를 결합해 예측하는 앙상블 모델로, 과적합을 방지하고 성능을 향상시킴. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/05_ensemble/README.md#bagging"> 랜덤 포레스트 (Random Forest) </a> | 여러 결정 트리를 결합해 예측하는 앙상블 모델로, 과적합을 방지하고 성능을 향상시킴. |
 | 나이브 베이즈 (Naive Bayes) | 조건부 확률 기반 분류 모델로, 가정이 간단하고 계산 효율이 높아 텍스트 분류 등에 자주 사용됨. |
-| 그래디언트 부스팅 머신 (Gradient Boosting Machine, GBM) | 이전 트리의 오차를 줄이는 방식으로 여러 트리를 결합해 성능을 향상시키는 모델. **XGBoost**, **LightGBM** 등이 대표적. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/05_ensemble/README.md#gradientboosting"> 그래디언트 부스팅 머신 (Gradient Boosting Machine, GBM) </a> | 이전 트리의 오차를 줄이는 방식으로 여러 트리를 결합해 성능을 향상시키는 모델. **XGBoost**, **LightGBM** 등이 대표적. |
 
 ---
 지도학습 회귀 모델 (연속적인 값을 예측하는 데 사용)
@@ -96,7 +96,7 @@
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/03_regression/README.md"> 릿지 회귀 (Ridge Regression)</a> | 과적합을 방지하기 위해 L2 정규화(term)를 추가한 선형 회귀 모델. |
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/03_regression/README.md">라쏘 회귀 (Lasso Regression)</a> | 과적합을 방지하기 위해 L1 정규화(term)를 추가한 선형 회귀 모델. |
 | <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/03_regression/README.md">다항 회귀 (Polynomial Regression)</a> | 독립 변수와 종속 변수 간의 비선형 관계를 나타낼 때 사용하는 회귀 모델. |
-| 그래디언트 부스팅 회귀 (Gradient Boosting Regression) | 회귀 문제에 적합한 앙상블 학습 모델로, 여러 약한 학습기를 결합해 성능을 향상시키는 방식. **XGBoost**, **LightGBM** 등 사용. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/05_ensemble/README.md#histgradientboostingregressor"> 그래디언트 부스팅 회귀 (Gradient Boosting Regression) </a> | 회귀 문제에 적합한 앙상블 학습 모델로, 여러 약한 학습기를 결합해 성능을 향상시키는 방식. **XGBoost**, **LightGBM** 등 사용. |
 
 ---
 
