@@ -1,6 +1,6 @@
 ## 앙상블(ensemble)
 - 다양한 모델을 결합하여 예측 성능을 향상시키틑 방법
-- 투표(voting), 배깅(Bagging), 부스팅(Boosting), 스태킹(stacking) 네 가지로 구분
+- ***투표(voting), 배깅(Bagging), 부스팅(Boosting), 스태킹(stacking)*** 네가지로 구분
 
 ##### 모든 예시의 데이터셋은 이걸 기준으로 한다.
 ```python
@@ -13,7 +13,7 @@ df.info()
 ```
 
 ### voting
-- ***hard voting*** : 여러 개의 예측지에 대해 다수결로 결정
+- #### hard voting : 여러 개의 예측지에 대해 다수결로 결정
 ```python
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
@@ -45,7 +45,7 @@ acc_score_test = accuracy_score(y_test, y_pred_test)
 print('테스트  평가 점수 : ' , acc_score_test)
 ```
 - 선언한 votingClassifier의 인자로 voting= 뒤에 쓰는 문자열에 따라 soft인지 hard인지 결정
-- 작동 원리는 다수결로 각각의 모델의 결과값 중 각 인덱스에 해당하는 값이 더 많은것을 가지고 예측한다.
+- 작동 원리는 다수결로 각각의 모델의 결과값(=pred) 중 각 인덱스에 해당하는 값이 더 많은것을 가지고 예측한다.
 ```python
 # hard votin 작동 원리 == 다수결
 start, end = 40,50
@@ -94,6 +94,36 @@ print('각 모델별 예측값 평균 : \n',calc_averages)
 print(np.array_equal(voting_clf_pred_proba, calc_averages))
 ```
 - soft voting의 경우 predict값으로 투표를 진행하는게 아니라 확률의 평균의 경우 ***predict_proba의 개별 정확도***를 가져와 각 모델의 정확도의 평균을 가지고 값을 예측한다.
+
+```python
+# soft voting 작동 원리 == 각 예측기의 확률값 평균
+
+start, end = 40, 50
+
+voting_clf_pred_proba = voting_clf.predict_proba(X_test[start:end])
+print('앙상블 예측값:', voting_clf_pred_proba)
+
+averages = np.full_like(voting_clf_pred_proba, 0)
+
+for classfier in [knn_clf, lr_clf, dt_clf]:
+    # 개별 학습 및 예측
+    classfier.fit(X_train, y_train)
+    pred = classfier.predict(X_test)
+    acc_score = accuracy_score(y_test, pred)
+    pred_proba = classfier.predict_proba(X_test[start:end])
+
+    # 예측 확률 평균을 위한 합계
+    averages += pred_proba
+    
+    class_name = classfier.__class__.__name__    # 클래스의 이름 속성
+    # print(f'{class_name} 개별 정확도: {acc_score:.4f}')
+    # print(f'{class_name} 예측 확률: {pred_proba}')
+
+# 예측 확률 평균 계산 및 출력
+calc_averages = averages / 3
+print("각 모델별 예측값 평균:", calc_averages)
+print(np.array_equal(voting_clf_pred_proba, calc_averages))
+```
 <br>
 => 최종적으로 ***hard-voting은 모델이 predict의 예측값을 다수결을 통해서 앙상블의 예측값***으로 사용하는거고 ***soft-voting은 predict_proba를 통해서 얻은 확률의 평균을 가지고 앙상블의 확률***로 사용한다.
 
@@ -102,6 +132,7 @@ print(np.array_equal(voting_clf_pred_proba, calc_averages))
 ## Bagging
 - Bootstrap Aggregation
 - Bootstrap 방식의 샘플링 : 각 estimator 마다 훈련 데이터를 뽑을 때, ***중복 값을 허용***하는 방식
+<img src= "https://mblogthumb-phinf.pstatic.net/20141205_226/muzzincys_1417764856096vPrIa_PNG/%B1%D7%B8%B21.png?type=w2">
 - 분류 모델의 경우, 각 tree(estimator)의 예측값을 다수결(hard voting)결정
 - 회귀 모델의 경우, 각 tree(estimator)의 예측값을 평균내어 결정
 - 기본적으로 100개의 tree 사용
@@ -109,7 +140,7 @@ print(np.array_equal(voting_clf_pred_proba, calc_averages))
 - 가질수 있는 여러 하이퍼 파라미터를 통해서 규제를 적용할수 있다.
     - 대부분이 트리 회귀 모델과 하이퍼 파라미터가 비슷하다.
     - class_weight = 클래스별로 가중치를 정해 불균형 데이터를 어떻게 처리할지 결정해주는 하이퍼 파라미터터
-- 가장 대표적인 예시가 RandomForestClassifier이다.
+- 가장 대표적인 예시가 ***RandomForestClassifier***이다.
 
 **하이퍼 파라미터**
 | **하이퍼파라미터**      | **설명**                                                                                     | **기본값**      |
@@ -178,5 +209,108 @@ plt.show()
 - 순차적으로 경사하강법을 사용해 이전 트리의 오차를 줄여나감
     - 분류 모델에서는 손실함수 Logloss를 사용해 오차를 줄임
     - 회귀모델에서는 손실함수 MSE를 사용해 오차를 줄임
+<img src="https://mblogthumb-phinf.pstatic.net/20141205_289/muzzincys_1417764856320XKWT7_PNG/%B1%D7%B8%B22.png?type=w2">
 - Boosting 계열은 일반적으로 결정트리 개수를 늘려도 과적합에 강함
 - 대표적인 알고리즘(모델) : GradientBoosting, HistGradientBoosting, XGBoost,LightGBM, CatBoost
+
+### GradientBoosting
+- RandomForest 모델과 달리 ***learning_rate***를 통해 오차를 줄여나가는 방식
+```python
+# GradientBoostingClassifier로 유방암 데이터 예측
+from sklearn.ensemble import GradientBoostingClassifier
+
+# 데이터 로드 및 분리
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = \
+    train_test_split(data.data, data.target, random_state=0)
+
+# 모델 생성
+gb_clf = GradientBoostingClassifier(
+    n_estimators=100,
+    learning_rate=0.01,
+    max_depth=3
+)
+
+# 학습
+gb_clf.fit(X_train, y_train)
+
+# 예측 및 평가
+y_pred_train = gb_clf.predict(X_train)
+y_pred_test = gb_clf.predict(X_test)
+print(f'학습 정확도: {accuracy_score(y_train, y_pred_train)}')
+print(f'평가 정확도: {accuracy_score(y_test, y_pred_test)}')
+```
+
+### HistGradientBoosting
+- 고성능 모델로 대규모 데이터셋 처리에 적합
+- 결측치가 존재해도 전처리가 필요 없음
+- LigtGBM의 영향을 받아 만들어진 scikit-learn의 모델
+
+#### HistGradinetBoostingClassifier
+    - 분류 모델에 적용시키는 Boosting기법
+```python
+from sklearn.ensemble import HistGradientBoostingClassifier
+
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = \
+    train_test_split(data.data, data.target, random_state=42)
+
+hist_gb_clf = HistGradientBoostingClassifier(
+    learning_rate=0.1,
+    max_depth=3,
+    max_bins=255,    # 255개의 구간으로 나누어 처리 (1개는 결측치 전용)
+    early_stopping=True,    # 반복 중 '일정 횟수' 이상 성능 향상이 없으면 학습 종료
+    n_iter_no_change=5      # '일정 횟수' 지정 (기본값: 10)
+)
+hist_gb_clf.fit(X_train, y_train)
+
+y_pred_train = hist_gb_clf.predict(X_train)
+y_pred_test = hist_gb_clf.predict(X_test)
+print(f'학습 정확도 : {accuracy_score(y_train, y_pred_train)}')
+print(f'평가 정확도 : {accuracy_score(y_test, y_pred_test)}')
+```
+
+- #### HistGradientBoostingRegressor
+    - 회귀모델에 적용시키는 Boosting 기법
+```python
+from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+hist_gb_reg = HistGradientBoostingRegressor(
+    max_iter=100,
+    max_depth=3,
+    learning_rate=0.05,
+    random_state=0,
+    l2_regularization=0.5,
+    min_samples_leaf=5
+)
+hist_gb_reg.fit(X_train, y_train)
+
+y_pred_train = hist_gb_reg.predict(X_train)
+y_pred_test = hist_gb_reg.predict(X_test)
+
+print(f'학습 MSE: {mean_squared_error(y_train, y_pred_train)} | 학습 R2: {r2_score(y_train, y_pred_train)}')
+print(f'평가 MSE: {mean_squared_error(y_test, y_pred_test)} | 평가 R2: {r2_score(y_test, y_pred_test)}')
+```
+
+##### GrideSearchCV
+    - 최고의 성능을 내는 하이퍼 파라미터 탐색 모듈
+    - GradientBoosting을 통해 학습된 모델을 인자로 받아 탐색
+```python
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {
+    'max_iter': [100, 200, 300],
+    'max_depth': [1, 3, 5],
+    'learning_rate': [0.01, 0.05, 0.1],
+    'min_samples_leaf': [10, 20, 30],
+    'l2_regularization': [0.0, 0.1, 1.0],
+    'max_bins': [255, 127]
+}
+
+hist_gb_reg = HistGradientBoostingRegressor(random_state=0)
+grid_search = GridSearchCV(hist_gb_reg, param_grid, cv=3, scoring='neg_mean_squared_error')
+grid_search.fit(X_train, y_train)
+
+grid_search.best_params_    # 최고의 성능을 내는 하이퍼 파라미터
+```
