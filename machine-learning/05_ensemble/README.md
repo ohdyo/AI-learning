@@ -314,3 +314,107 @@ grid_search.fit(X_train, y_train)
 
 grid_search.best_params_    # 최고의 성능을 내는 하이퍼 파라미터
 ```
+
+### XGBoosting
+    - L1 과 L2 규제를 적용시킨 GradientBoosting의 개선된 버전
+    - 학습 과정에서 손실함수 최소화
+    - 결측값 자동 처리
+**핵심 파라미터**
+1. **learning_rate**: 각 트리의 기여도를 조절하는 학습률로, 값이 작을수록 모델의 복잡도가 낮아지지만 더 많은 트리를 필요로 한다.
+2. **n_estimators**: 트리의 개수를 의미하며, 많을수록 복잡한 모델이 된다.
+3. **max_depth**: 각 트리의 최대 깊이로, 트리가 너무 깊으면 과적합될 수 있다.
+4. **objective**: 손실 함수의 종류로, 회귀 문제의 경우 'reg:squarederror', 분류 문제의 경우 'binary:logistic' 등을 사용한다.
+
+#### XGBClassfier
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+from xgboost import XGBClassifier    # xgboost에서는 sklearn과 비슷한 api 제공
+
+iris_data = load_iris()
+X_train, X_test, y_train, y_test = \
+    train_test_split(iris_data.data, iris_data.target, random_state=0)
+
+xgb_clf = XGBClassifier(
+    n_estimators=100,
+    max_depth=3,
+    learning_rate=0.1,
+    random_state=0
+)
+
+xgb_clf.fit(X_train, y_train)
+
+y_pred_train = xgb_clf.predict(X_train)
+y_pred_test = xgb_clf.predict(X_test)
+
+print(accuracy_score(y_train, y_pred_train))
+print(accuracy_score(y_test, y_pred_test))
+
+print(classification_report(y_test, y_pred_test))
+```
+
+#### LightGBM
+- Leaf-wise는 가장 큰 손실을 줄일 수 있는 리프를 먼저 확장하므로, 더 낮은 손실을 가진 복잡한 트리를 생성
+- 과적합의 위험이 있기 때문에 max_depth 같은 파라미터로 제어
+<img src="https://velog.velcdn.com/images/chlwldns00/post/73384f09-3d3d-433f-ab69-f3740b40d36b/image.PNG">
+**핵심 파라미터**
+<table border="1">
+  <thead>
+    <tr>
+      <th>하이퍼파라미터</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>num_leaves</b></td>
+      <td>한 트리에서 사용할 수 있는 리프의 최대 수를 지정한다. 모델의 복잡도를 결정하며, 값을 크게 하면 과적합(overfitting) 가능성이 높아진다.</td>
+    </tr>
+    <tr>
+      <td><b>max_depth</b></td>
+      <td>트리의 최대 깊이를 제한한다. <code>num_leaves</code>와 함께 과적합을 방지하기 위해 조정된다.</td>
+    </tr>
+    <tr>
+      <td><b>learning_rate</b></td>
+      <td>각 단계에서 트리의 기여도를 조정하는 학습률이다. 작은 값을 설정하면 모델 학습이 느리지만 성능이 더 좋을 수 있다.</td>
+    </tr>
+    <tr>
+      <td><b>n_estimators</b></td>
+      <td>생성할 트리의 수를 지정한다. 보통 <code>learning_rate</code>가 작을수록 큰 값을 설정한다.</td>
+    </tr>
+    <tr>
+      <td><b>min_data_in_leaf</b></td>
+      <td>리프 노드에서 최소 데이터 수를 제한하여 과적합을 방지한다.</td>
+    </tr>
+    <tr>
+      <td><b>feature_fraction</b></td>
+      <td>각 트리를 학습할 때 사용할 피처의 비율을 지정한다. 이 값을 줄이면 피처 샘플링 효과를 얻을 수 있다.</td>
+    </tr>
+    <tr>
+      <td><b>bagging_fraction & bagging_freq</b></td>
+      <td>데이터 샘플링을 통한 앙상블 효과를 얻기 위한 옵션으로, 일부 데이터만을 사용해 트리를 학습한다.</td>
+    </tr>
+    <tr>
+      <td><b>lambda_l1 & lambda_l2</b></td>
+      <td>L1 및 L2 정규화 항을 추가하여 모델의 가중치를 제한한다.</td>
+    </tr>
+    <tr>
+      <td><b>boosting</b></td>
+      <td>Boosting의 종류를 지정할 수 있다. 일반적으로 <code>gbdt</code>(Gradient Boosting Decision Tree)를 사용하지만, <code>dart</code>(Dropouts meet Multiple Additive Regression Trees)나 <code>goss</code>(Gradient-based One-Side Sampling)도 선택할 수 있다.</td>
+    </tr>
+  </tbody>
+</table>
+
+```python
+from lightgbm import LGBMClassifier
+
+lgbm = LGBMClassifier(
+    n_estimators=400,
+    learning_rate=0.7,
+    early_stopping_rounds=100,
+    verbose=1
+)
+eval_set = [(X_tr, y_tr), (X_val, y_val)]
+lgbm.fit(X_tr, y_tr, eval_set=eval_set)
+```
