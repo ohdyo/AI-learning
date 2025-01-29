@@ -104,10 +104,10 @@
 
 | **모델 명** | **설명** |
 | --- | --- |
-| K-평균 군집화 (K-Means Clustering) | 데이터를 K개의 군집으로 나누어 각 군집의 중심과 가까운 데이터를 그룹화하는 군집화 기법. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/07_clustering/README.md#k-%ED%8F%89%EA%B7%A0-%EA%B5%B0%EC%A7%91k-means-clustering"> K-평균 군집화 (K-Means Clustering) </a> | 데이터를 K개의 군집으로 나누어 각 군집의 중심과 가까운 데이터를 그룹화하는 군집화 기법. |
 | 계층적 군집화 (Hierarchical Clustering) | 데이터 간의 거리를 측정해 계층적으로 군집을 형성하며, 트리 구조로 시각화 가능. |
-| DBSCAN (Density-Based Spatial Clustering of Applications with Noise) | 밀도 기반의 군집화 기법으로, 밀집된 군집과 잡음을 구분함. 비정형 데이터에 강한 성능을 보임. |
-| 주성분 분석 (PCA, Principal Component Analysis) | 차원을 축소해 데이터의 주요 성분을 추출하는 기법으로, 데이터 시각화나 차원 축소에 사용됨. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/07_clustering/README.md#dbscan-density-based-spatial-clustering-of-application-with-noise"> DBSCAN (Density-Based Spatial Clustering of Applications with Noise) </a> | 밀도 기반의 군집화 기법으로, 밀집된 군집과 잡음을 구분함. 비정형 데이터에 강한 성능을 보임. |
+| <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/06_dim_reduction/README.md#pcaprincipal-component-analysis"> 주성분 분석 (PCA, Principal Component Analysis) </a> | 차원을 축소해 데이터의 주요 성분을 추출하는 기법으로, 데이터 시각화나 차원 축소에 사용됨. |
 | t-SNE (t-distributed Stochastic Neighbor Embedding) | 고차원의 데이터를 2차원 또는 3차원으로 변환해 데이터의 분포를 시각화하는 비지도학습 기법. |
 | UMAP (Uniform Manifold Approximation and Projection) | 차원 축소 기법으로, t-SNE와 유사하지만 더 빠르고 정확한 성능을 제공함. |
 | GAN (Generative Adversarial Network) | 생성자와 판별자와의 경쟁 속에서 더 나은 데이터 샘플을 만들어 내는 방식. 이미지 생성, 데이터 증강에 효과적. |
