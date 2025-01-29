@@ -60,7 +60,7 @@
 ### 6. 학습
 - 선정한 모델을 나눈 학습용 데이터 학습 단계
 
-### 7. 평가
+### <a href="https://github.com/ohdyo/AI-learning/blob/main/machine-learning/08_evaluation/README.md#%ED%8F%89%EA%B0%80"> 7. 평가 </a>
 - 성능에 대한 평가
 - 원하는 값이 안나오면 ***4단계로 이동***후 성능 올리기 가능
     - 정답 데이터가 부족하면 추가
