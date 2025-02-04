@@ -57,3 +57,28 @@ print(result)
     - 회귀 문제 : 1개
     - 이진 분류 1개 또는 2개
     - 다중 클래스 분류 : 클래스 개수와 동일한 뉴런 개수
+
+# 손실 함수
+- 신경망 학습의 예측값과 실제 값의 차이를 측정하는 함수
+- 손실함수의 학습률에 따라 학습률의 값이 커 최저점을 지나치거나 학습률의 값이 너무 작아 지역최저점의 함정에 빠짐
+    - 회귀 문제(Regression)
+        - 평균 제곱 오차(MSE)
+            - 잔차값이 클시 제대로 오차를 표현해주지 않음
+            - 이싱치에 민감 
+        - 평균 절대 오차(MAE)
+            - 이상치에 덜 민감함
+            - 잔차값이 작을시 오차를 잘 표현 못함
+        - Huber 손실
+            - MSE와 MAE를 섞어서 사용
+            ```python
+            def huber_loss(y_true,y_pred, delta=1.0):
+                error = y_true - y_pred
+                is_small_error = np.abs(error) <= delta
+                squared_loss = 0.5 * error**2
+                linear_loss = delta * (np.abs(error) - 0.5 * delta)
+                return np.mean(np.where(is_small_error, squared_loss, linear_loss))
+            ```
+    - 분류 문제(Classification)
+        - **교차 엔트로피 손실**
+        - 음성 로드 가능도 (교차 엔트로피 손실과 수식이 같음)
+    
