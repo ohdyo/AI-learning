@@ -33,9 +33,33 @@ arr = np.array([1,2,3,4])
 arr.shape # 몇 차원 배열인지 확인 가능
 arr.size # 배열의 총 크기
 arr.dtype # 배열의 데이터 타입
+arr.ndim # 차원의 갯수
+arr.astype(int) # 어레이의 형 변환
+```
+- 배열의 연산
+```python
+np.exp(arr)  # 거듭제곱
+np.sqrt(arr)  # 제곱근
+np.dot(arr1,arr2) # 배열의 내적(행렬의 내적과 비슷)
+
+np.std(arr) #표준 편차
+np.var(arr) # 분산
+
+# scpiy를 통한 연산
+from scipy import status
+stats.mode(arr) #배열의 최빈값 반환
 ```
 
+## 브로드 캐스팅
+- 서로 다른 크기간의 배열을 연산 가능토록 해줌
+- 2차원 배열간의 내적
+  - arr1 * arr2
+    - arr1의 열의 갯수와 arr2의 행의 갯수가 같아야 가능하다.
+- 작은 배열에 크기를 맞추는 방식이다. 
+
 ---
+
+
 ### 인덱싱 (Indexing)
 
 - 배열의 특정 값을 선택할 때 사용
@@ -76,14 +100,7 @@ arr2d_2 = np.array([[5, 6], [7, 8]])    #  [3*5 + 4*7, 3*6 + 4*8]]
 print(np.dot(arr2d_1, arr2d_2))     # [[19, 22],[43, 50]]
 ```
 ---
-### 브로드 캐스팅
-- 서로 다른 크기의 배열간 연산이 가능하게 해줌
-- 작은 배열을 큰 배열의 크기에 맞춰서 연산 진행
-```python
-arr2d = np.array([[1, 2, 3], [4, 5, 6]])    # [[2, 4, 6],
-arr1d = np.array([1, 2, 3])                 #  [5, 7, 9]]
-print(arr2d + arr1d)
-```
+
 ### 비교 연산
 - 비교 연산을 통해서 각 연산이 조건에 만족하는지 확인 가능
 - 내부 배열의 요소를 전부 True, False 둘중 하나로 반환
@@ -91,23 +108,6 @@ print(arr2d + arr1d)
 arr = np.array([10, 20, 30])
 print(arr > 15)  # [False, True, True]
 ```
----
-## 집계 함수
-### 합계 (sum)
-
-### 최대 최솟값 (max / min)
-
-### 평균(mean)
-
-### 표준편차/분산 (std/var)
-
-### 누계 (cumsum)
-
-### 중앙값 (median)
-
-### 최빈값 (Mode)
-
-### 범위 (max - min)
 
 ---
 ### 정규분포

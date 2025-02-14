@@ -76,9 +76,19 @@ print(result)
                 is_small_error = np.abs(error) <= delta
                 squared_loss = 0.5 * error**2
                 linear_loss = delta * (np.abs(error) - 0.5 * delta)
-                return np.mean(np.where(is_small_error, squared_loss, linear_loss))
+                return np.mean(np.where(is_small_error,   squared_loss, linear_loss))
             ```
     - 분류 문제(Classification)
         - **교차 엔트로피 손실**
         - 음성 로드 가능도 (교차 엔트로피 손실과 수식이 같음)
+
+# 수치 미분
+- 
+
+# 자동 미분
+
+# 오차 역전파법
+1. 순전파(Forward Propagation)
+
+2. 손실 계산 (Loss Calculation)
     
