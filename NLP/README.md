@@ -55,3 +55,25 @@
     - 여러 문장 연결시 대명사를 사용하는 문장 파악의 과정
     - **연결 장치**: 접속사, 대명사 등을 통해 문장 간 연결
 
+---
+# 토큰화 방식
+1. Subword 토큰화
+    - BertTokenizer
+        - 단어를 학습한 방식에 맞게 부분 단위로 쪼갬
+        - 어휘 크기를 줄이고 다양한 언어 패턴 학습 가능
+```python
+from transformers import BertTokenizer
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+word = 'unhappiness'
+subwords = tokenizer.tokenize(word)
+```
+
+2. 문자 단위 토큰화
+- 리스트로 문다 단위로 끊을수 있음
+```python
+word = 'unhappiness'
+list(word)
+```
+
+
+
