@@ -1,0 +1,55 @@
+이력서
+
+1. 인적사항
+
+- 이름: 이재혁
+- 성별: 남자
+- 생년월일: 2000년생
+- 병역사항: 현역 만기 전역
+
+2. 학력
+
+- 학사 학위 취득
+
+
+3. 경력 및 교육
+
+- 풀스택 개발자 수료 과정 이수
+- LLM서비스 개발자 수료중
+
+
+4. 포트폴리오
+
+1) 프로젝트 경험
+
+- 대실 예약 시스템 개발 (Spring Boot, React, MySQL)
+
+  - Spring Boot 기반의 백엔드 API 개발
+  - React를 활용한 프론트엔드 구현
+  - MySQL을 이용한 데이터베이스 설계 및 최적화
+  - Docker를 활용한 배포 환경 구성
+
+- CI/CD 자동화 구축 (Jenkins, Docker, GitHub Actions)
+
+  - Jenkins와 GitHub Actions를 활용한 배포 자동화
+  - Docker 컨테이너 기반으로 프론트엔드 및 백엔드 개별 배포
+  - 코드 변경 시 자동 빌드 및 테스트 실행
+
+- 머신러닝 및 딥러닝 모델 개발 및 배포 (Python, TensorFlow, PyTorch, Streamlit, XGBoost, RandomForest, Transformer, LangChain)
+
+  - 기대수명 예측 및 음악 사이트 이탈률 분석 프로젝트 진행
+  - Streamlit을 활용한 인터랙티브 웹 애플리케이션 구현
+  - XGBoost 및 랜덤 포레스트를 활용한 회귀 및 분류 모델 개발
+  - TensorFlow 및 PyTorch를 활용한 딥러닝 모델 구축 및 최적화
+  - CNN, RNN을 활용한 이미지 및 시계열 데이터 분석 경험
+  - Transformer 기반 자연어 처리 모델 개발 및 최적화
+  - LangChain을 활용한 LLM 기반 응용 서비스 개발 및 데이터 파이프라인 구성
+
+2) 보유 기술
+
+- 프론트엔드: React, JavaScript, TypeScript
+- 백엔드: Spring Boot, Java
+- 데이터베이스: MySQL, PostgreSQL
+- 배포 및 운영: Docker, Jenkins, GitHub Actions
+- 머신러닝 & 딥러닝: Python, XGBoost, RandomForest, TensorFlow, PyTorch, CNN, RNN, Transformer, LangChain, Streamlit
+- 기타: Git, Linux, RESTful API 설계

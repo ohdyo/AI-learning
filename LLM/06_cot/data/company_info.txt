@@ -1,0 +1,99 @@
+1. 이스트소프트
+조건:
+LLM/NLP 관련 분야 석사 학위 이상 또는 그에 준하는 3년 이상의 경력
+알고리즘과 머신러닝, LLM 분야에 대한 깊은 이해
+Pytorch를 활용한 코드 작성 및 실험 능숙
+우대조건:
+LLM 학습 및 최적화 경험
+분산 학습 시스템 구축 경험
+GPU 자원 최적화 경험
+모델 경량화 및 추론 성능 최적화 경험
+AWS, Azure 등 클라우드 플랫폼 사용 경험
+필요 기술 스택:
+Git
+AI/인공지능
+Linux
+Machine Learning
+Deep Learning
+AWS
+TensorFlow
+Python
+Azure
+PyTorch
+출처: 
+JOBKOREA.CO.KR
+
+2. 업스테이지
+조건:
+LLM 알고리즘/데이터 연구·개발 경험
+LLM Post-training 경험
+다양한 협업 환경에서의 원활한 의사소통 능력
+우대조건:
+대규모 모델 학습을 위한 프레임워크 사용 경험 (예: DeepSpeed)
+LLM 기반 제품 개발 경험
+AI 및 NLP 관련 국제 학회 논문 게재 경험
+필요 기술 스택:
+AI/인공지능
+NLP
+TensorFlow
+PyTorch
+출처: 
+JOBKOREA.CO.KR
+
+3. 삼정KPMG
+조건:
+ML/AI/NL/LLM 분야 경력자
+관련 프로젝트 경험 및 성과 보유자
+우대조건:
+금융 및 컨설팅 업계 경험자
+데이터 분석 및 처리 능력 우수자
+필요 기술 스택:
+Machine Learning
+AI
+Natural Language Processing
+LLM
+출처: 
+JOBKOREA.CO.KR
+
+4. 아이브릭스
+조건:
+LLM 서비스 구축 및 운영 경험
+AI 모델 개발 및 최적화 능력
+우대조건:
+대규모 데이터 처리 경험
+클라우드 환경에서의 서비스 개발 경험
+필요 기술 스택:
+AI/인공지능
+Machine Learning
+Python
+TensorFlow
+출처: 
+잡코리아
+
+5. 비전스페이스
+조건:
+생성형 AI, LLM, RAG R&D 개발 경험
+로봇산업 관련 프로젝트 참여 경험
+우대조건:
+데이터 사이언스 및 분석 능력 우수자
+유연근무제 활용 가능자
+필요 기술 스택:
+데이터 분석
+AI/인공지능
+Machine Learning
+Python
+출처: 
+JOBKOREA.CO.KR
+
+6. 진인프라
+조건:
+LLM 개발 경력자
+중견 IT 기업에서의 프로젝트 경험
+우대조건:
+AI 및 머신러닝 분야 전문성 보유자
+팀 협업 및 커뮤니케이션 능력 우수자
+필요 기술 스택:
+LLM 개발
+AI/인공지능
+Machine Learning
+Python

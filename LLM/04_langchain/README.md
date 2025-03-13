@@ -169,3 +169,45 @@ chain.invoke('대한민국')
             verbose=True
         )
         ```
+- 내가 만들어둔 클래스 혹은 함수를 도구로서 사용 가능하다.
+    - 정희한 함수를 `from langchain.tools import Tool` 모듈을 이용해 도구로서 사용한다.
+    ```python
+    from langchain.tools import Tool
+    from langchain.agents import AgentType, initialize_agent, load_tools
+
+    tools = [
+        Tool(name='회의 요약', func=summarize_doc, description='긴 회의록 내용 요약'),
+        Tool(name='이메일 요약', func=summarize_email, description='업무 이메일 내용 요약')
+    ]
+    agent = initialize_agent(
+        tools=tools,
+        llm=model,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        handle_parsing_error=True,
+        verbose=True
+    )
+    ```
+
+---
+
+### Serp
+- 구글에서 검색한 내용을 가져올수 있게 도와주는 api
+```python
+from langchain.utilities import SerpAPIWrapper
+param= {
+    'engine': 'google_news',
+    'gl' : 'kr',
+    'hl' : 'ko'
+}
+serp = SerpAPIWrapper(params=param)
+# news_text = serp.run('코로나')
+# news_text[:2]
+```
+
+---
+## RAG
+- 벡터화를 진행하여 문맥 기반 대답을 생성해준다.
+- <a href='https://python.langchain.com/docs/tutorials/rag/#indexing'>문서 참고</a>
+
+### Retrieval
+
